@@ -1,0 +1,21 @@
+{
+    "name": "morningtrain/wp-nets-easy",
+    "description": "Nets Easy SDK for WordPress",
+    "minimum-stability" : "dev",
+    "autoload": {
+        "psr-4": {
+            "Morningtrain\\WpNetsEasy\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Martin Schadegg Brønniche",
+            "email": "ms@morningtrain.dk"
+        }
+    ],
+    "require": {
+        "morningtrain/wp-route": "^0.6",
+        "morningtrain/wp-database": "^0.2",
+        "morningtrain/php-loader": "^0.3"
+    }
+}
