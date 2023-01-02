@@ -11,9 +11,8 @@ A Morningtrain package to simple handle NETS Easy payments.
     - [illuminate/database](#illuminatedatabase)
 - [Usage](#usage)
     - [Initializing package](#initializing-package)
-    - [Creating a Model](#creating-a-model)
-    - [Creating a Migration](#creating-a-migration)
-    - [Running migrations](#running-migrations)
+    - [Create payment](#create-payment)
+    - [Handle existing payment](#handle-existing-payment)
 - [Credits](#credits)
 - [Testing](#testing)
 - [License](#license)
@@ -66,7 +65,7 @@ $payment = Payment::create()
             ->setReference($customer->id)
             ->setEmail($customer->email)
             ->setPhone($customer->phone)
-            ->setName($customer->fistName, $customer->lastName)
+            ->setName($customer->firstName, $customer->lastName)
             ->setCompanyName($customer->companyName)
             ->setShippingAddress(
                 Address::create()
@@ -91,7 +90,7 @@ foreach($order->items as $item) {
 }
 
 // Persist payment in NETS Easy
-$response = $payment->createRequst();
+$response = $payment->createRequest();
 
 if(wp_remote_retrieve_response_code($response) !== 201) {
     // Error handling when something was wrong with the payment
@@ -106,6 +105,59 @@ $order->setPaymentId($payment->getPaymentId());
 wp_redirect($payment->getPaymentPageUrl());
 exit();
 ```
+
+### Handle existing payment
+When a payment requrest has been created, the payment reference will be saved to the database.
+
+#### Get payment
+Payment is a model implementet with Eloquent. 
+To get payments you can use all methods from Eloquent (see [https://laravel.com/docs/9.x/eloquent#retrieving-models](documentation)).
+
+You can use the custom method ```Payment::getByPaymentId($paymentId);```
+
+```php
+$payment = Payment::getByPaymentId($order->payment_id);
+```
+
+#### Terminate payment
+To terminate payment, the customer must not have finished checkout.
+You can use it on the cancel callback to avoid double payments later.
+
+```php
+$payment->terminate()
+```
+
+#### Check if payment is reserved
+
+```php
+$payment->isReserved()
+```
+
+#### Check if payment is charged
+
+```php
+$payment->isCharged()
+```
+
+#### Charge payment
+
+```php
+$payment->charge()
+```
+
+*NOTE: Partly charges is not implementet yet*
+
+#### Refund payment
+
+*NOTE: Refund and partly refund is not implementet yet*
+
+### Create subscription
+
+*NOTE: Subscriptions is not implementet yet*
+
+### Handle existing subcripiton
+
+*NOTE: Subscriptions is not implementet yet*
 
 ## Credits
 
