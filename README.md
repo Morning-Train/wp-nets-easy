@@ -13,6 +13,8 @@ A Morningtrain package to simple handle NETS Easy payments.
     - [Initializing package](#initializing-package)
     - [Create payment](#create-payment)
     - [Handle existing payment](#handle-existing-payment)
+    - [Create subscription](#create-subscription)
+    - [Handle existing subscription](#handle-existing-subscription)
 - [Credits](#credits)
 - [Testing](#testing)
 - [License](#license)
@@ -155,7 +157,7 @@ $payment->charge()
 
 *NOTE: Subscriptions is not implementet yet*
 
-### Handle existing subcripiton
+### Handle existing subscription
 
 *NOTE: Subscriptions is not implementet yet*
 
