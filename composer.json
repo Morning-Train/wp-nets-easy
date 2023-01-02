@@ -2,6 +2,7 @@
     "name": "morningtrain/wp-nets-easy",
     "description": "Nets Easy SDK for WordPress",
     "minimum-stability" : "dev",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Morningtrain\\WpNetsEasy\\": "src/"
