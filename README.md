@@ -111,7 +111,7 @@ When a payment requrest has been created, the payment reference will be saved to
 
 #### Get payment
 Payment is a model implementet with Eloquent. 
-To get payments you can use all methods from Eloquent (see [https://laravel.com/docs/9.x/eloquent#retrieving-models](documentation)).
+To get payments you can use all methods from Eloquent (see [documentation](https://laravel.com/docs/9.x/eloquent#retrieving-models)).
 
 You can use the custom method ```Payment::getByPaymentId($paymentId);```
 
