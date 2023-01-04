@@ -64,7 +64,6 @@ class Address implements JsonSerializable {
 
     public function getAddressLine2() : ?string
     {
-
         return $this->addressLine2;
     }
 
