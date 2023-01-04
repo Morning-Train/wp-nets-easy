@@ -6,10 +6,10 @@ use Morningtrain\WpNetsEasy\Enums\CountryCode;
 
 class Address implements JsonSerializable {
     
-    protected ?string $addressLine1;
-    protected ?string $addressLine2;
-    protected ?string $postalCode;
-    protected ?string $city;
+    protected ?string $addressLine1 = null;
+    protected ?string $addressLine2 = null;
+    protected ?string $postalCode = null;
+    protected ?string $city = null;
     protected string $country = CountryCode::DK;
 
     public static function create() : static
