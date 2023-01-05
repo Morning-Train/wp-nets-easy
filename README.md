@@ -15,6 +15,7 @@ A Morningtrain package to simple handle NETS Easy payments.
     - [Handle existing payment](#handle-existing-payment)
     - [Create subscription](#create-subscription)
     - [Handle existing subscription](#handle-existing-subscription)
+    - [Handle webhooks](#handle-webhooks)
 - [Credits](#credits)
 - [Testing](#testing)
 - [License](#license)
@@ -108,6 +109,13 @@ wp_redirect($payment->getPaymentPageUrl());
 exit();
 ```
 
+#### Auto charge payment
+If your product allows you to auto charge payment. You can tell Nets Easy to charge the payment automatically before you persist the payment.
+
+```php
+$payment->autoCharge()
+```
+
 ### Handle existing payment
 When a payment requrest has been created, the payment reference will be saved to the database.
 
@@ -160,6 +168,40 @@ $payment->charge()
 ### Handle existing subscription
 
 *NOTE: Subscriptions is not implementet yet*
+
+### Handle webhoks
+The implementation handle webhooks and sets the payment status automatically.
+
+If you need to do something on a specific webhook, you can do that throug actions and filters.
+
+#### List of implemented webhooks
+
+| Name                        | Descritpion                                                     |
+|-----------------------------|-----------------------------------------------------------------|
+| payment.created             | A payment has been created.                                     |
+| payment.reservation.created | The amount of the payment has been reserved.                    |
+| payment.reservation.failed  | A reservation attempt has failed.                               |
+| payment.checkout.completed  | The customer has completed the checkout.                        |
+| payment.charge.created.v2   | The customer has successfully been charged, partially or fully. |
+| payment.charge.failed       | A charge attempt has failed.                                    |
+| payment.refund.initiated.v2 | A refund has been initiated.                                    |
+| payment.refund.failed       | A refund attempt has failed.                                    |
+| payment.refund.completed    | A refund has successfully been completed.                       |
+| payment.cancel.created      | A reservation has been canceled.                                |
+| payment.cancel.failed       | A cancellation has failed.                                      |
+
+#### Actions
+
+| Hook Name                                     | Description                                                                                                   |
+|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| morningtrain/nets-easy/webhook/{$webhookName} | Do something on the webhook (before the implementet handling but after we have checked for previous handling) |
+
+#### Filters
+| Hook Name                                                  | Filtered value                                    | Extra parameters                        | Description                                                                                                          |
+|------------------------------------------------------------|---------------------------------------------------|-----------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| morningtrain/nets-easy/webhook/{$webhookName}/bypass       | false                                             | none                                    | Return something to bypass all webhook handling logic                                                                |
+| morningtrain/nets-easy/webhook/{$webhookName}/after-handle | false or value from handle function               | $webhook - The Webhook object with data | Do something after default handling. Return something to bypass setting the webhook as handled and return status 200 |
+| morningtrain/nets-easy/webhook/{$webhookName}/response     | WP_REST_Response with default values (status 200) | $webhook - The Webhook object with data | Filter the response after webhook fully handled                                                                      |
 
 ## Credits
 
