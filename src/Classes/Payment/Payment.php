@@ -26,7 +26,6 @@ class Payment implements JsonSerializable {
     protected string $returnUrl;
     protected string $cancelUrl;
     protected bool $autoCharge = false;
-    protected string $language = Language::da;
     protected ?PaymentReference $paymentReference = null;
     protected ?string $paymentPageUrl = null;
 
@@ -140,17 +139,6 @@ class Payment implements JsonSerializable {
         return $this;
     }
 
-    /**
-     * @param string $languageCode Use
-     * @return $this
-     */
-    public function setLanguage(string $languageCode) : static
-    {
-        $this->language = $languageCode;
-
-        return $this;
-    }
-
     public function setReturnUrl(string $returnUrl) : static
     {
         $this->returnUrl = $returnUrl;
@@ -216,6 +204,29 @@ class Payment implements JsonSerializable {
 
         return $this;
     }
+
+	public function setWebhookId(string $webhookId) : static
+	{
+		$paymentReference = $this->getPaymentReference();
+
+		if(empty($this->paymentReference)) {
+			return $this;
+		}
+
+		if(!is_array($paymentReference->webhook_ids)) {
+			$paymentReference->webhook_ids = [];
+		}
+
+		$webhookIds = is_array($paymentReference->webhook_ids) ? $paymentReference->webhook_ids : [];
+
+		$webhookIds[] = $webhookId;
+
+		$paymentReference->webhook_ids = $webhookIds;
+		$paymentReference->save();
+		$paymentReference->refresh();
+
+		return $this;
+	}
 
     protected function getPaymentReference() : ?PaymentReference
     {
@@ -325,36 +336,24 @@ class Payment implements JsonSerializable {
         return $paymentReference->webhook_ids;
     }
 
-    public function setWebhookId(string $webhookId) : static
-    {
-        $paymentReference = $this->getPaymentReference();
-
-        if(empty($this->paymentReference)) {
-            return $this;
-        }
-
-        if(!is_array($paymentReference->webhook_ids)) {
-            $paymentReference->webhook_ids = [];
-        }
-
-        $webhookIds = is_array($paymentReference->webhook_ids) ? $paymentReference->webhook_ids : [];
-
-        $webhookIds[] = $webhookId;
-
-        $paymentReference->webhook_ids = $webhookIds;
-        $paymentReference->save();
-        $paymentReference->refresh();
-
-        return $this;
-    }
-
-    public function getPaymentPageUrl() : ?string
+	/**
+	 * @param string|NULL $language use \Morningtrain\WpNetsEasy\Enums\Language
+	 *
+	 * @return string|null
+	 */
+    public function getPaymentPageUrl(string $language = null) : ?string
     {
         if(!$this->isCreated() || !empty($this->paymentPageUrl)) {
-            return $this->paymentPageUrl;
+            $url = $this->paymentPageUrl;
+        } else {
+	        $url = $this->getFetchedDataByKey('payment.checkout.url', $this->paymentPageUrl);
         }
 
-        return $this->getFetchedDataByKey('payment.checkout.url', $this->paymentPageUrl);
+        if(!empty($language)) {
+            $url = add_query_arg('language', $language, $url);
+        }
+
+        return $url;
     }
 
     protected function getFetchedData() : ?object
@@ -551,7 +550,7 @@ class Payment implements JsonSerializable {
             'returnUrl' => $this->getReturnUrl(),
             'cancelUrl' => $this->getCancelUrl(),
             'termsUrl' => $this->getTermsUrl(),
-            'charge' => $this->getAutoCharge(),
+            'charge' => $this->getAutoCharge()
         ];
 
         if(!empty($this->getCustomer())) {

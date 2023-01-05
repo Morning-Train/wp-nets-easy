@@ -13,7 +13,7 @@ class NetsEasy {
 
         WebhookHandler::init();
 
-        $migrationsPath = realpath(__DIR__ . '/../database/migrations');
+        $migrationsPath = wp_normalize_path(__DIR__ . '/database/migrations');
         Database::setup($migrationsPath);
         Migration::migrate([$migrationsPath]);
 

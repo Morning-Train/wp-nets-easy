@@ -96,7 +96,7 @@ class WebhookHandler {
 
         do_action("morningtrain/nets-easy/webhook/{$webhookName}", $webhook, $request);
 
-        if($bypass = $webhook->handle()) {
+        if($bypass = apply_filters("morningtrain/nets-easy/webhook/{$webhookName}/after-handle", $webhook->handle() ?? false, $webhook)) {
             return $bypass;
         }
 
