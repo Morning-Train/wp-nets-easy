@@ -82,7 +82,7 @@ class WebhookHandler {
         }
 
         if(empty(static::getWebhooks()[$webhookName])) {
-            return new WP_Error('no_webhook', __('Invalid webhook', 'n'), ['status' => 404]);
+            return new WP_Error('no_webhook', __('Invalid webhook', 'morningtrain_nets_easy'), ['status' => 404]);
         }
 
         $webhookClass = static::getWebhooks()[$webhookName];
@@ -91,7 +91,7 @@ class WebhookHandler {
 
         if($webhook->isHandled()) {
             // Return status 200 to avoid further calls
-            return new WP_Error('webhook_handled', __('Webhook already handled', ''), ['status' => 200]);
+            return new WP_Error('webhook_handled', __('Webhook already handled', 'morningtrain_nets_easy'), ['status' => 200]);
         }
 
         do_action("morningtrain/nets-easy/webhook/{$webhookName}", $webhook, $request);

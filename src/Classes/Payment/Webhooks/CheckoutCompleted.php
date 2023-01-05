@@ -13,7 +13,7 @@ class CheckoutCompleted extends Webhook {
         $payment = Payment::getByPaymentId($this->getDataByKey('paymentId'));
 
         if(empty($payment)) {
-            return new \WP_Error('no_payment', __('Invalid payment ID', 'n'), ['status' => 404]);
+            return new \WP_Error('no_payment', __('Invalid payment ID', 'morningtrain_nets_easy'), ['status' => 404]);
         }
 
         if(in_array($payment->getStatus(), [
