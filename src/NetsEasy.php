@@ -15,7 +15,6 @@ class NetsEasy {
 
         $migrationsPath = wp_normalize_path(__DIR__ . '/database/migrations');
         Database::setup($migrationsPath);
-        Migration::migrate([$migrationsPath]);
 
         return $netsEasyClient;
     }
