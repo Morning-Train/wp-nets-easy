@@ -16,7 +16,7 @@
     ],
     "require": {
         "morningtrain/wp-route": "^0.6",
-        "morningtrain/wp-database": "^0.2",
+        "morningtrain/wp-database": "^0.3",
         "morningtrain/php-loader": "^0.3"
     }
 }
