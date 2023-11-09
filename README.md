@@ -52,6 +52,25 @@ Initialize `\Morningtrain\WpNetsEasy\NetsEasy` with NETS Easy test or live secre
 \Morningtrain\WpNetsEasy\NetsEasy::init('live-secret-key-abcdefghijklmnopqrstuvwxyz123456789');
 ```
 
+### Running migrations
+
+This needs to be done before using the package, or after updating the package.  
+You can run all new migrations like so:
+
+Using `wp cli`:
+
+```shell
+wp dbmigrate
+```
+
+Using `php`:
+
+```php
+<?php
+    \Morningtrain\WP\Database\Database::migrate();
+?>
+```
+
 ### Create payment
 
 ```php
