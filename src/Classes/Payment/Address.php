@@ -50,7 +50,7 @@ class Address implements JsonSerializable {
      * @param string $countryCode Use Morningtrain\WpNetsEasy\Enums\CountryCode to converte from two letter to tree letter
      * @return $this
      */
-    public function setCounty(string $countryCode) : static
+    public function setCountry(string $countryCode) : static
     {
         $this->country = $countryCode;
         
